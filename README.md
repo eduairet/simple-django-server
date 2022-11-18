@@ -114,3 +114,71 @@ Testing the Django framework
         vagrant@ubuntu-bionic:/vagrant$ python hello.py
         #Hello world!
         ```
+
+## Creating a Django App
+
+-   First create a Python environment
+    ```Bash
+    vagrant up
+    vagrant ssh
+    vagrant@ubuntu-bionic:~$  cd /vagrant
+    vagrant@ubuntu-bionic:/vagrant$ python -m venv ~/.env
+    ```
+-   Now you can activate and deactivate it
+
+    ```Bash
+    # Activate
+    vagrant@ubuntu-bionic:/vagrant$ source ~/.env/bin/activate
+    # Chack if the python you are using is the one from your virtual environment
+    (.env) vagrant@ubuntu-bionic:/vagrant$ which python
+    /home/vagrant/.env/bin/python
+    # Deactivate
+    (.env) vagrant@ubuntu-bionic:/vagrant$ deactivate
+    vagrant@ubuntu-bionic:/vagrant$
+    ```
+
+-   Add the required files for your environment
+
+    -   First add your `requirements.txt` file
+    -   And add inside that file your dependencies
+        ```
+        django==2.2
+        djangorestframework==3.9.2
+        ```
+    -   And install them with this command
+        ```bash
+        (.env) vagrant@ubuntu-bionic:/vagrant$ pip install -r requirements.txt
+        ```
+
+-   Now you can start your app i your root folder
+    ```bash
+    (.env) vagrant@ubuntu-bionic:/vagrant$ django-admin.py startproject profiles_project .
+    ```
+    -   You'll notice that a new folder called `profiles_project` showed up, this
+    -   Now set your profiles:
+        ```bsh
+        python manage.py startapp profiles_api
+        ```
+    -   And install your apps inside your `profile_project/settings.py` file
+        ```Python
+        # profiles_project/settings.py
+        INSTALLED_APPS = [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            # These are the new ones
+            'rest_framework',
+            'rest_framework.authtoken',
+            'profiles_api',
+        ]
+        ```
+-   Now you can test your changes
+    -   Start your server
+        ```bash
+        (.env) vagrant@ubuntu-bionic:/vagrant$ python manage.py runserver 0.0.0.0:8000
+        ```
+    -   Visit your host at http://127.0.0.1:8000
+        ![Host window](./images/host.png)
